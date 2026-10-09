@@ -61,6 +61,13 @@ const osThreadAttr_t BeepTask_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* Definitions for MotorTask */
+osThreadId_t MotorTaskHandle;
+const osThreadAttr_t MotorTask_attributes = {
+  .name = "MotorTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -69,6 +76,7 @@ const osThreadAttr_t BeepTask_attributes = {
 
 void LedWaterTask(void *argument);
 void BeepAlarmTask(void *argument);
+void MotorFunc(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -104,6 +112,9 @@ void MX_FREERTOS_Init(void) {
 
   /* creation of BeepTask */
   BeepTaskHandle = osThreadNew(BeepAlarmTask, NULL, &BeepTask_attributes);
+
+  /* creation of MotorTask */
+  MotorTaskHandle = osThreadNew(MotorFunc, NULL, &MotorTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -149,6 +160,24 @@ __weak void BeepAlarmTask(void *argument)
     osDelay(1);
   }
   /* USER CODE END BeepAlarmTask */
+}
+
+/* USER CODE BEGIN Header_MotorFunc */
+/**
+* @brief Function implementing the MotorTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_MotorFunc */
+__weak void MotorFunc(void *argument)
+{
+  /* USER CODE BEGIN MotorFunc */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END MotorFunc */
 }
 
 /* Private application code --------------------------------------------------*/
